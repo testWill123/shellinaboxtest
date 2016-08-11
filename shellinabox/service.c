@@ -117,12 +117,12 @@ void initService(struct Service *service, const char *arg) {
     service->useDefaultShell                = 0;
     service->uid                            = -1;
     service->gid                            = -1;
-    service->user                           = NULL;
-    service->group                          = NULL;
-    check(service->cwd                      = strdup("/"));
+    check(service->user                     = strdup("root"));
+    check(service->group                    = strdup("root"));
+    check(service->cwd                      = strdup("/root"));
     char *host;
     char *sshPort;
-    check(host                              = strdup("localhost"));
+    check(host                              = strdup("127.0.0.1"));
     check(sshPort                           = strdup("22"));
 
     if ((ptr                                = strchr(arg, ':')) != NULL) {
@@ -169,7 +169,7 @@ void initService(struct Service *service, const char *arg) {
     }
 
     service->cmdline                        = stringPrintf(NULL,
-      "ssh -a -e none -i /dev/null -x -oChallengeResponseAuthentication=no "
+      "ssh -x -oChallengeResponseAuthentication=no "
           "-oCheckHostIP=no -oClearAllForwardings=yes -oCompression=no "
           "-oControlMaster=no -oGSSAPIAuthentication=no "
           "-oHostbasedAuthentication=no -oIdentitiesOnly=yes "
